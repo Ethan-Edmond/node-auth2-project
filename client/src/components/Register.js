@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { pubApi } from '../utils/axiosInstances';
+import { pubApi} from '../utils/axiosInstances';
 
-function Login ({setToken}) {
+function Register () {
   const {push} = useHistory();
   const [formVal, setFormVal] = useState({
     username: '',
@@ -20,10 +20,9 @@ function Login ({setToken}) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    pubApi.post('/login', formVal)
-      .then(({data: {token}}) => {
-        setToken(token);
-        push('/home');
+    pubApi.post('/register', formVal)
+      .then(res => {
+        push('/login');
       })
       .catch(err => {
         setErrors(err.response.data.message);
@@ -46,10 +45,10 @@ function Login ({setToken}) {
         value={formVal.password}
         placeholder='Password'
       />
-      <button>Login</button>
+      <button>Register</button>
       <h3>{errors}</h3>
     </form>
   );
 }
 
-export default Login;
+export default Register;

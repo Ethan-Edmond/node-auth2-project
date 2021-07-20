@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const api = (token) => axios.create({
-  baseURL: 'http://localhost:5000/api/users',
-  headers: {
-    Authorization: token
-  }
-});
+import { privApi } from '../utils/axiosInstances';
 
 function Home ({token}) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    api(token).get('')
+    privApi(token).get('/users')
       .then(res => {
         setUsers(res.data);
       })
       .catch(console.log);
-  }, []);
+  }, [token]);
 
   return (
     <ul className='users'>

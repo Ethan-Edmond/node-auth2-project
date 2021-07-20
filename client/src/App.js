@@ -4,6 +4,7 @@ import './App.css';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import Home from './components/Home';
+import Register from './components/Register';
 
 function App() {
   const [token, setToken] = useState('');
@@ -14,6 +15,7 @@ function App() {
         <Route path='/home'>
           <Home token={token}/>
         </Route>
+        <Route path='/register' component={Register}/>
         <Route path='/login'>
           <Login setToken={setToken}/>
         </Route>
