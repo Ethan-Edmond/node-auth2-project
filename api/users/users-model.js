@@ -1,24 +1,9 @@
 const db = require('../../data/db-config.js');
 
 function find() {
-  return "find wired";
-  /**
-    You will need to join two tables.
-    Resolves to an ARRAY with all users.
-
-    [
-      {
-        "user_id": 1,
-        "username": "bob",
-        "role_name": "admin"
-      },
-      {
-        "user_id": 2,
-        "username": "sue",
-        "role_name": "instructor"
-      }
-    ]
-   */
+  return db('users as u')
+    .select('u.user_id', 'u.username', 'r.role_name')
+    .join('roles as r', 'u.role_id', 'r.role_id');
 }
 
 function findBy(filter) {
