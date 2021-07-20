@@ -35,7 +35,7 @@ Write the following user access functions inside `api/users/users-model.js`:
 
 - [x] `find`
 - [x] `findBy`
-- [ ] `findById`
+- [x] `findById`
 
 #### 2B - Middleware Functions
 
@@ -58,7 +58,7 @@ Write the following endpoints inside `api/auth/auth-router.js`:
 The endpoints inside `api/users/users-router.js` are built already but check them out:
 
 - [x] `[GET] /api/users` - only users with a valid token can access
-- [ ] `[GET] /api/users/:user_id` - only users with a valid token AND a role of 'admin' can access
+- [x] `[GET] /api/users/:user_id` - only users with a valid token AND a role of 'admin' can access
 
 #### 2D - Secrets File
 
