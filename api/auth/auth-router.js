@@ -5,16 +5,14 @@ const bcrypt = require('bcryptjs');
 const Users = require('../users/users-model');
 const jwt = require('jsonwebtoken');
 
-console.log(jwt);
-
 router.post("/register", validateRoleName, (req, res, next) => {
   const {username} = req.body;
   const {role_name} = req;
   const unhashedPass = req.body.password;
   const password = bcrypt.hashSync(unhashedPass, 10);
   Users.add({username, password, role_name})
-    .then(returnVal => {
-      res.json(returnVal);
+    .then(user => {
+      res.json(user);
     })
     .catch(next);
   /**

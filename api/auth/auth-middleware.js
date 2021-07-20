@@ -1,9 +1,29 @@
 const { JWT_SECRET } = require("../secrets"); // use this secret!
+const jwt = require('jsonwebtoken');
 const Users = require('../users/users-model');
 
+console.log(jwt);
+
 const restricted = (req, res, next) => {
-  console.log('restricted wired');
-  next();
+  const token = req.headers.authorization;
+  if (token) {
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+      if (err) {
+        next({
+          status: 401,
+          message: 'Token invalid'
+        });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    next({
+      status: 401,
+      message: 'Token required'
+    });
+  }
   /*
     If the user does not provide a token in the Authorization header:
     status 401
@@ -111,4 +131,4 @@ module.exports = {
   checkUsernameExists,
   validateRoleName,
   only,
-}
+};
