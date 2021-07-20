@@ -7,7 +7,10 @@ function find() {
 }
 
 function findBy(filter) {
-  return "findBy wired";
+  return db('users as u')
+    .select('u.user_id', 'u.username', 'r.role_name')
+    .join('roles as r', 'u.role_id', 'r.role_id')
+    .where(filter);
   /**
     You will need to join two tables.
     Resolves to an ARRAY with all users that match the filter condition.
@@ -24,7 +27,10 @@ function findBy(filter) {
 }
 
 function findById(user_id) {
-  return "findById wired";
+  return db('users as u')
+    .select('u.user_id', 'u.username', 'r.role_name')
+    .join('roles as r', 'u.role_id', 'r.role_id')
+    .where({user_id});
   /**
     You will need to join two tables.
     Resolves to the user with the given user_id.
