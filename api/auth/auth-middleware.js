@@ -1,4 +1,5 @@
 const { JWT_SECRET } = require("../secrets"); // use this secret!
+const Users = require('../users/users-model');
 
 const restricted = (req, res, next) => {
   console.log('restricted wired');
@@ -36,9 +37,22 @@ const only = role_name => (req, res, next) => {
 };
 
 
+
 const checkUsernameExists = (req, res, next) => {
-  console.log('checkUsernameExists wired');
-  next();
+  const {username} = req.body;
+  Users.findBy({username}).first()
+    .then(user => {
+      if (user) {
+        req.user = user;
+        next();
+      } else {
+        next({
+          status: 401,
+          message: 'Invalid credentials'
+        });
+      }
+    })
+    .catch(next);
   /*
     If the username in req.body does NOT exist in the database
     status 401
@@ -58,8 +72,15 @@ const validateRoleName = (req, res, next) => {
         message: 'Role name can not be admin'
       });
     } else {
-      req.role_name = role_name;
-      next();
+      if (role_name.length > 32) {
+        next({
+          status: 422,
+          message: 'Role name can not be longer than 32 chars'
+        });
+      } else {
+        req.role_name = role_name;
+        next();
+      }
     }
   } else {
     req.role_name = 'student';
