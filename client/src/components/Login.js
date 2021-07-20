@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
-function Login () {
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/auth'
+});
+
+function Login ({setToken}) {
+  const {push} = useHistory();
   const [formVal, setFormVal] = useState({
     username: '',
     password: ''
   });
+
+  const [errors, setErrors] = useState('');
 
   const onChange = (e) => {
     setFormVal({
@@ -15,7 +24,14 @@ function Login () {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formVal);
+    api.post('/login', formVal)
+      .then(({data: {token}}) => {
+        setToken(token);
+        push('/home');
+      })
+      .catch(err => {
+        setErrors(err.response.data.message);
+      });
   };
 
   return (
@@ -35,6 +51,7 @@ function Login () {
         placeholder='Password'
       />
       <button>Login</button>
+      <h3>{errors}</h3>
     </form>
   );
 }
